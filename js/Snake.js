@@ -20,22 +20,22 @@ Snake.prototype = new SnakeWorldObject();
 Snake.prototype.setupSnake = function(maxX, maxY) {
   // Set snake's starting coordinates
 
-  let startingpositionX = Math.floor(maxX / 2);
-  let startingpositionY = Math.floor(maxY / 2);
-  this.setX(startingpositionX);
+  let startingpositionY = Math.round(maxY / 2);
+  let startingpositionX = Math.round(maxX / 2);
   this.setY(startingpositionY);
+  this.setX(startingpositionX);
 
   // create initial number of snake sections (snake length)
   
-  for(let i = 0; i < NUM_INITIAL_SECTIONS; i++){
-      let ycord = startingpositionY + i + 1;
+  for(let j = 0; j < NUM_INITIAL_SECTIONS; j++){
+      let ycord = startingpositionY + j + 1;
       this.sections.unshift(new SnakeSection(startingpositionX, ycord))
   }
 
-};
+};  
 Snake.prototype.hasCollided = function(maxX, maxY) {
   // Check if snake has collided with itself or board boundaries.
-  if(this.getX() < 0 || this.getX() >= maxX || this.getY() < 0 || this.getY() >= maxY){
+  if(this.getX() < 0 || this.getY() < 0 || this.getY() >= maxY || this.getX() >= maxX ){
       return true;
   }
 
@@ -55,8 +55,8 @@ Snake.prototype.endMove = function(didGrow) {
 Snake.prototype.startMove = function() {
   this.direction = this.nextDirection;
   // Move snake here
-  var xcord = this.getX();
   var ycord = this.getY();
+  var xcord = this.getX();
 
   if(this.direction === UP)
     this.setY(ycord - 1);
@@ -75,6 +75,7 @@ Snake.prototype.draw = function(context, spacing) {
   for(var i = 0; i < this.sections.length; i++){
       this.sections[i].draw(context, spacing); 
   }
+  DrawUtil.drawImage(context, this.img, spacing * this.getX(), spacing * this.getY(), spacing, spacing)
 };
 
 Snake.prototype.init = function(maxX, maxY) {
@@ -85,17 +86,17 @@ Snake.prototype.init = function(maxX, maxY) {
 Snake.prototype.setupListeners = function() {
   this.direction = UP;
   this.nextDirection = UP;
-  var snake = this;
+  var s = this;
   document.addEventListener('keydown', function(e) {
-    // Set snake's nextDirection based on keypress.
-    if(e.keyCode === UP_KEY_CODE && snake.direction !== DOWN)
-        snake.nextDirection = UP;
-    else if(e.keyCode === DOWN_KEY_CODE && snake.direction !== UP)
-        snake.nextDirection = DOWN;
-    else if(e.keyCode === LEFT_KEY_CODE && snake.direction !== RIGHT)
-        snake.nextDirection = LEFT;
-    else if(e.keyCode === RIGHT_KEY_CODE && snake.direction !== LEFT)
-        snake.nextDirection = RIGHT;
+    // Set s's nextDirection based on keypress.
+    if(e.key === "ArrowUp" && s.direction !== DOWN)
+        s.nextDirection = UP;
+    else if(e.key === "ArrowDown" && s.direction !== UP)
+        s.nextDirection = DOWN;
+    else if(e.key === "ArrowLeft" && s.direction !== RIGHT)
+        s.nextDirection = LEFT;
+    else if(e.key === "ArrowRight" && s.direction !== LEFT)
+        s.nextDirection = RIGHT;
     else return 
     e.preventDefault();
   });

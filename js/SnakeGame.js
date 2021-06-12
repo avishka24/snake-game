@@ -32,9 +32,8 @@ function SnakeGame($outerContainer, maxX, maxY, spacing) {
 	  this.score += 1;
 	  this.food.randomizePosition(this.maxX, this.maxY);
 	}
-	 
+	 return !this.snake.hasCollided(this.maxX, this.maxY);
 	// return if the snake is alive or dead, i.e. is game over?
-	return !this.snake.hasCollided(this.maxX, this.maxY);
   };
   
   SnakeGame.prototype.start = function() {

@@ -6,8 +6,8 @@ function SnakeFood() {
   
   SnakeFood.prototype.randomizePosition = function(maxX, maxY) {
 	// Set snake food at random positions.
-	this.setX(Math.round(Math.random() * maxX));
-	this.setY(Math.round(Math.random() * maxY));
+	this.setY(Math.floor(Math.random() * maxY));
+	this.setX(Math.floor(Math.random() * maxX));
   };
   
   SnakeFood.prototype.draw = function(context, spacing) {
